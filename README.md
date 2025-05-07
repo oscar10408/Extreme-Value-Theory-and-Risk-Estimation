@@ -140,8 +140,3 @@ To reproduce this analysis:
 1. Open `Extreme-Value-Theory-and-Risk-Estimation.Rnw` in **RStudio**
 2. Go to: `Tools → Global Options → Sweave → Use knitr`
 3. Click **Knit to PDF**
-
-### Required R Packages
-
-```r
-install.packages(c("knitr", "statmod", "bootstrap"))
