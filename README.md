@@ -9,6 +9,8 @@ This repository presents a complete implementation of the **Peaks-over-Threshold
 - Real-world application to **S&P 500 daily loss data (1957–2023)**
 
 ---
+## 🧮 Sample Code 
+
 ```r
 # Generate data from t-distribution 
 set.seed(123)
@@ -76,7 +78,7 @@ simulate_ci <- function(nu, rep = 500, threshold_quantile = 0.9) {
 simulate_ci(nu = 2)
 ```
 
-
+---
 ## 🗂 Project Files
 
 | File | Description |
