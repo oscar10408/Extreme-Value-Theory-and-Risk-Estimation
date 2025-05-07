@@ -87,7 +87,7 @@ This repository presents a complete implementation of the **Peaks-over-Threshold
 
 - Applied POT method to empirical daily loss data
 - Threshold selected using mean-excess plot: **u₀ = 0.032**
-- 
+
 <img src="Images/Load_SP_500-1.png" width="500"/>
 
 - Estimated ξ across several thresholds
