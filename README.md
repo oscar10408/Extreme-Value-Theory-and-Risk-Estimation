@@ -28,6 +28,9 @@ This repository presents a complete implementation of the **Peaks-over-Threshold
 - Estimated GPD shape parameter ξ via MLE
 - Constructed 95% confidence intervals using the Hessian matrix
 
+<img src="Images/Best_Nu.png" width="600"/>
+
+
 **Estimated Shape Parameter ξ and 95% CI:**
 
 | ν     | ξ     | Lower   | Upper   |
@@ -84,7 +87,13 @@ This repository presents a complete implementation of the **Peaks-over-Threshold
 
 - Applied POT method to empirical daily loss data
 - Threshold selected using mean-excess plot: **u₀ = 0.032**
+- 
+<img src="Images/Load_SP_500-1.png" width="500"/>
+
 - Estimated ξ across several thresholds
+
+<img src="Images/GPD_CI-1.png" width="500"/>
+
 
 **Selected ξ Estimates:**
 
