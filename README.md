@@ -9,6 +9,73 @@ This repository presents a complete implementation of the **Peaks-over-Threshold
 - Real-world application to **S&P 500 daily loss data (1957–2023)**
 
 ---
+```r
+# Generate data from t-distribution 
+set.seed(123)
+n <- 2000
+nu <- 3
+x <- abs(rt(n, df = nu))
+
+# Select threshold
+u <- quantile(x, 0.9)
+excess <- x[x > u] - u
+
+# Fit GPD via maximum likelihood
+library(MASS)
+gpd_fit <- fitdistr(excess, densfun = "gpd", start = list(scale = 1, shape = 0.2))
+
+mean_excess <- function(data, thresholds) {
+  sapply(thresholds, function(u) {
+    excess <- data[data > u] - u
+    if (length(excess) == 0) return(NA)
+    mean(excess)
+  })
+}
+
+thresholds <- seq(0, max(x) * 0.8, length.out = 100)
+excess_means <- mean_excess(x, thresholds)
+
+plot(thresholds, excess_means, type = "l", main = "Mean Excess Plot",
+     xlab = "Threshold u", ylab = "Mean Excess")
+abline(v = u, col = "red")
+
+# Parametric bootstrap
+B <- 1000
+var_boot <- numeric(B)
+es_boot <- numeric(B)
+alpha <- 1 / 252  # One-day VaR level
+
+for (b in 1:B) {
+  sample_gpd <- rgpd(n, xi = gpd_fit$estimate["shape"], beta = gpd_fit$estimate["scale"])
+  sample_sorted <- sort(sample_gpd, decreasing = TRUE)
+  var_boot[b] <- quantile(sample_sorted, 1 - alpha)
+  es_boot[b] <- mean(sample_sorted[sample_sorted > var_boot[b]])
+}
+
+# Confidence intervals
+quantile(var_boot, probs = c(0.025, 0.975))
+quantile(es_boot, probs = c(0.025, 0.975))
+
+library(evd)
+
+simulate_ci <- function(nu, rep = 500, threshold_quantile = 0.9) {
+  coverage <- 0
+  for (i in 1:rep) {
+    data <- abs(rt(2000, df = nu))
+    u <- quantile(data, threshold_quantile)
+    excess <- data[data > u] - u
+    fit <- fpot(excess, threshold = 0, model = "gpd")
+    ci <- confint(fit)
+    if (ci[1] < 1 / (nu - 1) & ci[2] > 1 / (nu - 1)) {
+      coverage <- coverage + 1
+    }
+  }
+  coverage / rep
+}
+
+simulate_ci(nu = 2)
+```
+
 
 ## 🗂 Project Files
 
